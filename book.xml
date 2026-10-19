@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<catalogue>
+    <book id="b001">
+        <title>JavaScript: The Good Parts</title>
+        <author>Douglas Crockford</author>
+        <price>39.99</price>
+    </book>
+    <book id="b002">
+        <title>Learning XML</title>
+        <author>Erik Ray</author>
+        <price>45.50</price>
+    </book>
+    <book id="b003">
+        <title>HTML and CSS Design</title>
+        <author>Jon Duckett</author>
+        <price>42.00</price>
+    </book>
+</catalogue>

@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Lab4 XML & JSON Demo</title>
+    <style>
+        body {font-family:Arial; max-width:1000px; margin:20px auto; padding:0 20px;}
+        section{margin:30px 0; padding:15px; border:1px solid #ccc;}
+        .item{padding:10px; margin:8px 0; background:#f7f7f7;}
+    </style>
+</head>
+<body>
+    <h1>Lab4: XML Book Catalogue & JSON User Profiles</h1>
+
+    <section>
+        <h2>📚 Books from XML (book.xml)</h2>
+        <div id="bookContainer"></div>
+    </section>
+
+    <section>
+        <h2>👤 User Profiles from JSON (userProfiles.json)</h2>
+        <div id="userContainer"></div>
+    </section>
+
+<script>
+async function loadXMLBooks(){
+    const res = await fetch("book.xml");
+    const xmlText = await res.text();
+    const parser = new DOMParser();
+    const xmlDoc = parser.parseFromString(xmlText,"text/xml");
+    const books = xmlDoc.querySelectorAll("book");
+    const container = document.getElementById("bookContainer");
+
+    books.forEach(book=>{
+        const id = book.getAttribute("id");
+        const title = book.querySelector("title").textContent;
+        const author = book.querySelector("author").textContent;
+        const price = book.querySelector("price").textContent;
+
+        const div = document.createElement("div");
+        div.className="item";
+        div.innerHTML = `
+            <p><b>Book ID:</b> ${id}</p>
+            <p><b>Title:</b> ${title}</p>
+            <p><b>Author:</b> ${author}</p>
+            <p><b>Price:</b> $${price}</p>
+        `;
+        container.appendChild(div);
+    })
+}
+
+async function loadJSONUsers(){
+    const res = await fetch("userProfiles.json");
+    const users = await res.json();
+    const container = document.getElementById("userContainer");
+
+    users.forEach(u=>{
+        const div = document.createElement("div");
+        div.className="item";
+        div.innerHTML = `
+            <p><b>Name:</b> ${u.firstName} ${u.lastName}</p>
+            <p><b>Email:</b> ${u.email}</p>
+            <p><b>DOB:</b> ${u.dateOfBirth}</p>
+            <p><b>Address:</b> ${u.address.street}, ${u.address.city}, ${u.address.state} ${u.address.zipCode}</p>
+            <p><b>Preferences:</b> Theme:${u.preferences.theme}, Lang:${u.preferences.language}, Notifications:${u.preferences.notifications}, Newsletter Subscribed:${u.preferences.subscription}</p>
+        `;
+        container.appendChild(div);
+    })
+}
+
+window.onload = function(){
+    loadXMLBooks().catch(err=>console.error("XML load error:",err));
+    loadJSONUsers().catch(err=>console.error("JSON load error:",err));
+}
+</script>
+</body>
+</html>
